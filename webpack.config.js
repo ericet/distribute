@@ -8,7 +8,7 @@ module.exports = {
         main: "./src/main.js",
     },
     output: {
-        filename: "bundle.js",
+        filename: "./bundle.js",
         path: path.resolve(__dirname,  "docs")
     },
     devServer: {
