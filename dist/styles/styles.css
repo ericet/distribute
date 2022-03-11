@@ -40,7 +40,6 @@ distribute-transaction {
 distribute-transaction .status{
     margin-left: 1.4rem;
     font-style: italic;
-    margin-top:auto;
 }
 
 .cosmos{
