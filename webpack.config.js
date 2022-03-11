@@ -9,7 +9,7 @@ module.exports = {
     },
     output: {
         filename: "./bundle.js",
-        path: path.resolve(__dirname,  "docs")
+        path: path.resolve(__dirname,  "dist")
     },
     devServer: {
         port: 8081
@@ -23,7 +23,7 @@ module.exports = {
             patterns: [
                 {
                     from: path.resolve(__dirname, './public/assets/'),
-                    to: path.resolve(__dirname, 'docs')
+                    to: path.resolve(__dirname, 'dist')
                 }
             ]
         }),
