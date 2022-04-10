@@ -50,7 +50,8 @@ window.addEventListener("keplr_keystorechange", () => {
 
 window.onunhandledrejection = function (e) {
     $.toast().reset("all");
-    $('#status').html('<p style="color:red">Transaction rejected</p>');
+    console.log(e.reason)
+    $('#status').html(`<p style="color:red">${e.reason}</p>`);
 
 }
 
