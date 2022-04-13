@@ -75,7 +75,7 @@ export const chainMap = {
     },
     "crescent-1":{
         name:'Crescent',
-        rpc:'http://45.76.97.48:26657/',
+        rpc:'https://anyplace-cors.herokuapp.com/http://45.76.97.48:26657/',
         rest:'https://lcd-crescent-app.cosmostation.io/',
         symbol:'CRE',
         denom: "ucre",
