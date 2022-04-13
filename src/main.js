@@ -15,6 +15,8 @@ function isNumeric(str) {
 }
 
 async function reloadPage() {
+    let chainId = $('#chainId').val();
+    chain = chainMap[chainId];
     if (!window.getOfflineSigner || !window.keplr) {
         return $.toast({
             heading: "Error",
@@ -23,9 +25,58 @@ async function reloadPage() {
             showHideTransition: "fade",
             icon: "error",
         });
+    }else{
+        if (window.keplr.experimentalSuggestChain) {
+            try {
+                await window.keplr.experimentalSuggestChain({
+                    chainId: chainId,
+                    chainName: chain.name,
+                    rpc: chain.rpc,
+                    rest:chain.rest,
+                    stakeCurrency: {
+                        coinDenom: chain.symbol,
+                        coinMinimalDenom: chain.denom,
+                        coinDecimals: 6,
+                    },
+                   
+                    bip44: {
+                
+                        coinType: 118,
+                    },
+                    bech32Config: {
+                        bech32PrefixAccAddr: chain.prefix,
+                        bech32PrefixAccPub: chain.prefix+"pub",
+                        bech32PrefixValAddr: chain.prefix+"valoper",
+                        bech32PrefixValPub: chain.prefix+"valoperpub",
+                        bech32PrefixConsAddr: chain.prefix+"valcons",
+                        bech32PrefixConsPub: chain.prefix+"valconspub"
+                    },
+                    currencies: [{
+                        coinDenom: chain.symbol,
+                        coinMinimalDenom: chain.denom,
+                        coinDecimals: 6,
+                    }],
+                    feeCurrencies: [{
+                        coinDenom: chain.symbol,
+                        coinMinimalDenom: chain.denom,
+                        coinDecimals: 6,
+                        
+                    }],
+                   
+                    coinType: 118,
+                    gasPriceStep: {
+                        low: 0.00,
+                        average: 0.00,
+                        high: 0.00
+                    }
+                });
+            } catch(err) {
+                console.log(err)
+                alert("Failed to suggest the chain");
+            }
+        }
     }
-    let chainId = $('#chainId').val();
-    chain = chainMap[chainId];
+    
     await window.keplr.enable(chainId);
     offlineSigner = window.getOfflineSigner(chainId);
     accounts = await offlineSigner.getAccounts();

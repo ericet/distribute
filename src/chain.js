@@ -72,5 +72,17 @@ export const chainMap = {
         gas:80000,
         prefix:"terra"
 
+    },
+    "crescent-1":{
+        name:'Crescent',
+        rpc:'http://45.76.97.48:26657/',
+        rest:'https://lcd-crescent-app.cosmostation.io/',
+        symbol:'CRE',
+        denom: "ucre",
+        exponent: 6,
+        min_tx_fee: "0",
+        gas:80000,
+        prefix:"cre"
+
     }
 }
