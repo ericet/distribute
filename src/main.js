@@ -26,7 +26,7 @@ async function reloadPage() {
             icon: "error",
         });
     }else{
-        if (window.keplr.experimentalSuggestChain) {
+        if (chain.chain_status && window.keplr.experimentalSuggestChain) {
             try {
                 await window.keplr.experimentalSuggestChain({
                     chainId: chainId,
@@ -36,12 +36,12 @@ async function reloadPage() {
                     stakeCurrency: {
                         coinDenom: chain.symbol,
                         coinMinimalDenom: chain.denom,
-                        coinDecimals: 6,
+                        coinDecimals: chain.exponent,
                     },
                    
                     bip44: {
                 
-                        coinType: 118,
+                        coinType: chain.coin_type,
                     },
                     bech32Config: {
                         bech32PrefixAccAddr: chain.prefix,
@@ -54,21 +54,21 @@ async function reloadPage() {
                     currencies: [{
                         coinDenom: chain.symbol,
                         coinMinimalDenom: chain.denom,
-                        coinDecimals: 6,
+                        coinDecimals: chain.exponent,
                     }],
                     feeCurrencies: [{
                         coinDenom: chain.symbol,
                         coinMinimalDenom: chain.denom,
-                        coinDecimals: 6,
+                        coinDecimals: chain.exponent,
                         
                     }],
                    
-                    coinType: 118,
-                    gasPriceStep: {
-                        low: 0.00,
-                        average: 0.00,
-                        high: 0.00
-                    }
+                    coinType: chain.coin_type,
+                    // gasPriceStep: {
+                    //     low: 0.00,
+                    //     average: 0.00,
+                    //     high: 0.00
+                    // }
                 });
             } catch(err) {
                 console.log(err)

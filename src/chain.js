@@ -1,6 +1,6 @@
 export const chainMap = {
     "cosmoshub-4":{
-        name:'cosmos',
+        name:'Cosmos',
         rpc:'https://cosmoshub.validator.network/',
         symbol:'ATOM',
         denom: "uatom",
@@ -10,7 +10,7 @@ export const chainMap = {
         prefix:"cosmos"
     },
     "osmosis-1":{
-        name:'osmosis',
+        name:'Osmosis',
         rpc:'https://osmosis.validator.network/',
         symbol:'OSMO',
         denom: "uosmo",
@@ -20,7 +20,7 @@ export const chainMap = {
         prefix:"osmo"
     },
     "juno-1":{
-        name:'juno',
+        name:'Juno',
         rpc:'https://rpc-juno.itastakers.com',
         symbol:'JUNO',
         denom: "ujuno",
@@ -30,7 +30,7 @@ export const chainMap = {
         prefix:"juno"
     },
     "akashnet-2":{
-        name:'akash-network',
+        name:'Akash Network',
         rpc:'https://rpc.akash.forbole.com:443',
         symbol:'AKT',
         denom: "uakt",
@@ -41,7 +41,7 @@ export const chainMap = {
 
     },
     "stargaze-1":{
-        name:'stargaze',
+        name:'Stargaze',
         rpc:'https://rpc.stargaze-apis.com/',
         symbol:'STARS',
         denom: "ustars",
@@ -52,18 +52,20 @@ export const chainMap = {
 
     },
     "chihuahua-1":{
-        name:'chihuahua',
+        name:'Chihuahua',
+        chain_status:'experiemental',
         rpc:'https://rpc.chihuahua.wtf/',
+        rest:'https://api.chihuahua.wtf/',
         symbol:'HUAHUA',
         denom: "uhuahua",
         exponent: 6,
-        min_tx_fee: "5000",
+        min_tx_fee: "2000",
         gas:80000,
-        prefix:"chihuahua"
-
+        prefix:"chihuahua",
+        coin_type:118
     },
     "columbus-5":{
-        name:'terra-luna',
+        name:'Terra',
         rpc:'https://rpc-columbus.keplr.app',
         symbol:'LUNA',
         denom: "uluna",
@@ -71,10 +73,10 @@ export const chainMap = {
         min_tx_fee: "5000",
         gas:80000,
         prefix:"terra"
-
     },
     "crescent-1":{
         name:'Crescent',
+        chain_status:'experiemental',
         rpc:'https://anyplace-cors.herokuapp.com/http://45.76.97.48:26657/',
         rest:'https://lcd-crescent-app.cosmostation.io/',
         symbol:'CRE',
@@ -82,7 +84,8 @@ export const chainMap = {
         exponent: 6,
         min_tx_fee: "0",
         gas:80000,
-        prefix:"cre"
+        prefix:"cre",
+        coin_type:118
 
     }
 }
