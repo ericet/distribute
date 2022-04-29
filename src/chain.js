@@ -1,7 +1,7 @@
 export const chainMap = {
     "cosmoshub-4":{
         name:'Cosmos',
-        rpc:'https://cosmoshub.validator.network/',
+        rpc:'https://anyplace-cors.herokuapp.com/https://rpc.cosmos.network:443',
         symbol:'ATOM',
         denom: "uatom",
         exponent: 6,
