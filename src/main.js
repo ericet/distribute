@@ -5,16 +5,17 @@ import {
     SigningStargateClient,
 } from '@cosmjs/stargate'
 let chain, offlineSigner, client, accounts;
+let disclaimerShown;
 import { Bech32 } from "@cosmjs/encoding";
 
 
-function isNumeric(str) {
+function isNumeric (str) {
     if (typeof str != "string") return false
     return !isNaN(str) &&
         !isNaN(parseFloat(str))
 }
 
-async function reloadPage() {
+async function reloadPage () {
     let chainId = $('#chainId').val();
     chain = chainMap[chainId];
     if (!window.getOfflineSigner || !window.keplr) {
@@ -25,31 +26,31 @@ async function reloadPage() {
             showHideTransition: "fade",
             icon: "error",
         });
-    }else{
+    } else {
         if (chain.chain_status && window.keplr.experimentalSuggestChain) {
             try {
                 await window.keplr.experimentalSuggestChain({
                     chainId: chainId,
                     chainName: chain.name,
                     rpc: chain.rpc,
-                    rest:chain.rest,
+                    rest: chain.rest,
                     stakeCurrency: {
                         coinDenom: chain.symbol,
                         coinMinimalDenom: chain.denom,
                         coinDecimals: chain.exponent,
                     },
-                   
+
                     bip44: {
-                
+
                         coinType: chain.coin_type,
                     },
                     bech32Config: {
                         bech32PrefixAccAddr: chain.prefix,
-                        bech32PrefixAccPub: chain.prefix+"pub",
-                        bech32PrefixValAddr: chain.prefix+"valoper",
-                        bech32PrefixValPub: chain.prefix+"valoperpub",
-                        bech32PrefixConsAddr: chain.prefix+"valcons",
-                        bech32PrefixConsPub: chain.prefix+"valconspub"
+                        bech32PrefixAccPub: chain.prefix + "pub",
+                        bech32PrefixValAddr: chain.prefix + "valoper",
+                        bech32PrefixValPub: chain.prefix + "valoperpub",
+                        bech32PrefixConsAddr: chain.prefix + "valcons",
+                        bech32PrefixConsPub: chain.prefix + "valconspub"
                     },
                     currencies: [{
                         coinDenom: chain.symbol,
@@ -60,9 +61,9 @@ async function reloadPage() {
                         coinDenom: chain.symbol,
                         coinMinimalDenom: chain.denom,
                         coinDecimals: chain.exponent,
-                        
+
                     }],
-                   
+
                     coinType: chain.coin_type,
                     // gasPriceStep: {
                     //     low: 0.00,
@@ -70,13 +71,13 @@ async function reloadPage() {
                     //     high: 0.00
                     // }
                 });
-            } catch(err) {
+            } catch (err) {
                 console.log(err)
                 alert("Failed to suggest the chain");
             }
         }
     }
-    
+
     await window.keplr.enable(chainId);
     offlineSigner = window.getOfflineSigner(chainId);
     accounts = await offlineSigner.getAccounts();
@@ -195,6 +196,15 @@ $('#recipients').on('input', async function () {
         $(`#send`).html(send);
     }
 });
+
+$(window).on('load', function () {
+    disclaimerShown = window.localStorage.getItem('disclaimerShown');
+    console.log(disclaimerShown);
+    if (!disclaimerShown) {
+        $('#disclaimer').modal('show');
+        window.localStorage.setItem('disclaimerShown', true);
+    }
+});
 $('#sendForm').submit(async function (e) {
     e.preventDefault();
     $.toast().reset("all");
@@ -225,13 +235,13 @@ $('#sendForm').submit(async function (e) {
             chain.rpc,
             offlineSigner
         );
-        let gas = chain.gas*transfers.length;
+        let gas = chain.gas * transfers.length;
         const fee = {
             amount: [{
                 denom: chain.denom,
                 amount: chain.min_tx_fee,
             },],
-            gas: ""+gas,
+            gas: "" + gas,
         }
         let ops = [];
         for (let transfer of transfers) {
