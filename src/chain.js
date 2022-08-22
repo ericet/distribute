@@ -1,7 +1,7 @@
 export const chainMap = {
     "cosmoshub-4":{
         name:'Cosmos',
-        rpc:'https://anyplace-cors.herokuapp.com/https://rpc.cosmos.network:443',
+        rpc:'https://rpc.cosmos.directory/cosmoshub',
         symbol:'ATOM',
         denom: "uatom",
         exponent: 6,
@@ -11,7 +11,7 @@ export const chainMap = {
     },
     "osmosis-1":{
         name:'Osmosis',
-        rpc:'https://osmosis.validator.network/',
+        rpc:'https://rpc.cosmos.directory/osmosis',
         symbol:'OSMO',
         denom: "uosmo",
         exponent: 6,
@@ -21,7 +21,7 @@ export const chainMap = {
     },
     "juno-1":{
         name:'Juno',
-        rpc:'https://rpc-juno.itastakers.com',
+        rpc:'https://rpc.cosmos.directory/juno',
         symbol:'JUNO',
         denom: "ujuno",
         exponent: 6,
@@ -31,7 +31,7 @@ export const chainMap = {
     },
     "akashnet-2":{
         name:'Akash Network',
-        rpc:'https://rpc.akash.forbole.com:443',
+        rpc:'https://rpc.cosmos.directory/akash',
         symbol:'AKT',
         denom: "uakt",
         exponent: 6,
@@ -42,7 +42,7 @@ export const chainMap = {
     },
     "stargaze-1":{
         name:'Stargaze',
-        rpc:'https://rpc.stargaze-apis.com/',
+        rpc:'https://rpc.cosmos.directory/stargaze',
         symbol:'STARS',
         denom: "ustars",
         exponent: 6,
@@ -54,7 +54,7 @@ export const chainMap = {
     "chihuahua-1":{
         name:'Chihuahua',
         chain_status:'experiemental',
-        rpc:'https://rpc.chihuahua.wtf/',
+        rpc:'https://rpc.cosmos.directory/chihuahua',
         rest:'https://api.chihuahua.wtf/',
         symbol:'HUAHUA',
         denom: "uhuahua",
@@ -64,20 +64,10 @@ export const chainMap = {
         prefix:"chihuahua",
         coin_type:118
     },
-    "columbus-5":{
-        name:'Terra',
-        rpc:'https://rpc-columbus.keplr.app',
-        symbol:'LUNA',
-        denom: "uluna",
-        exponent: 6,
-        min_tx_fee: "5000",
-        gas:80000,
-        prefix:"terra"
-    },
     "crescent-1":{
         name:'Crescent',
         chain_status:'experiemental',
-        rpc:'https://anyplace-cors.herokuapp.com/http://45.76.97.48:26657/',
+        rpc:'https://rpc.cosmos.directory/crescent',
         rest:'https://lcd-crescent-app.cosmostation.io/',
         symbol:'CRE',
         denom: "ucre",
