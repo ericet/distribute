@@ -1,21 +1,44 @@
-import { coins } from '@cosmjs/launchpad'
 import { chainMap } from "./chain";
+import { coins } from '@cosmjs/launchpad'
+
 import {
-    assertIsBroadcastTxSuccess,
     SigningStargateClient,
 } from '@cosmjs/stargate'
 let chain, offlineSigner, client, accounts;
 let disclaimerShown;
 import { Bech32 } from "@cosmjs/encoding";
-
+import { sign, broadcastTx } from "./libs/utils";
+import { format, floor } from 'mathjs'
+import { coin as _coin } from '@cosmjs/stargate'
+import axios from 'axios';
 
 function isNumeric (str) {
     if (typeof str != "string") return false
     return !isNaN(str) &&
         !isNaN(parseFloat(str))
 }
+function coin (amount, denom) {
+    return _coin(format(floor(amount), { notation: 'fixed' }), denom)
+}
+
+function extractAccountNumberAndSequence (ret) {
+    let { account } = ret
+    if (account && account.base_vesting_account) { // vesting account
+        account = account.base_vesting_account.base_account
+    } else if (account && account.base_account) { // evmos based account
+        account = account.base_account
+    }
+    const accountNumber = account.account_number
+    const sequence = account.sequence || 0
+
+    return {
+        accountNumber,
+        sequence,
+    }
+}
 
 async function reloadPage () {
+    $('#status').html('');
     let chainId = $('#chainId').val();
     chain = chainMap[chainId];
     if (!window.getOfflineSigner || !window.keplr) {
@@ -88,11 +111,12 @@ async function reloadPage () {
     let balance = await client.getBalance(accounts[0].address, chain.denom);
     $('#balance').html(`<section>You have <b>${(balance.amount / Math.pow(10, chain.exponent)).toFixed(3)} ${chain.symbol}</b></section>`);
     $('#connected').html(`<section><h2>Connect to wallet</h2>
-    <p>Logged in as <b>${accounts[0].address}</b></p>
-    </section>`);
+        <p>Logged in as <b>${accounts[0].address}</b></p>
+        </section>`);
     $('#confirmation').html('');
     $('#send').html('');
     document.getElementById("recipients").value = "";
+
 
 }
 
@@ -199,7 +223,6 @@ $('#recipients').on('input', async function () {
 
 $(window).on('load', function () {
     disclaimerShown = window.localStorage.getItem('disclaimerShown');
-    console.log(disclaimerShown);
     if (!disclaimerShown) {
         $('#disclaimer').modal('show');
         window.localStorage.setItem('disclaimerShown', true);
@@ -228,18 +251,11 @@ $('#sendForm').submit(async function (e) {
     (async () => {
         let chainId = $('#chainId').val();
         chain = chainMap[chainId];
-        await window.keplr.enable(chainId);
-        offlineSigner = window.getOfflineSigner(chainId);
-        accounts = await offlineSigner.getAccounts();
-        client = await SigningStargateClient.connectWithSigner(
-            chain.rpc,
-            offlineSigner
-        );
         let gas = chain.gas * transfers.length;
         const fee = {
             amount: [{
                 denom: chain.denom,
-                amount: chain.min_tx_fee,
+                amount: "" + chain.min_tx_fee,
             },],
             gas: "" + gas,
         }
@@ -251,10 +267,11 @@ $('#sendForm').submit(async function (e) {
                 value: {
                     fromAddress: accounts[0].address,
                     toAddress: transfer.address,
-                    amount: coins(amount, chain.denom)
+                    amount: coins("" + amount, chain.denom)
                 },
             })
         }
+
         $.toast({
             heading: "Transfering",
             text: "Start to transfer",
@@ -264,24 +281,44 @@ $('#sendForm').submit(async function (e) {
             icon: "info",
         });
         $('#status').html('<p>Processing Transfers...</p>');
-        let result = await client.signAndBroadcast(accounts[0].address, ops, fee, '');
-        $.toast().reset("all");
-        $.toast({
-            heading: "Success",
-            text: "Transaction Successful! ",
-            showHideTransition: "slide",
-            position: "top-center",
-            icon: "success",
-        });
-        if (result.code !== undefined &&
-            result.code !== 0) {
-            let status = `<p style="color:red">Failed to send tx: ${result.log || result.rawLog}</p>`;
-            $('#status').html(status);
-        } else {
-            let status = `<p>Transaction ID: </p><a href='https://ping.pub/${chain.name}/tx/${result.transactionHash}' target="_blank">${result.transactionHash}</a>`;
-            $('#status').html(status);
-
-        }
+        axios
+            .get(
+                `${chain.rest}/cosmos/auth/v1beta1/accounts/${accounts[0].address}`
+            )
+            .then((res) => {
+                let account = {};
+                if (res.status === 200) {
+                    let { accountNumber, sequence } = extractAccountNumberAndSequence(res.data);
+                    account.accountNumber = accountNumber;
+                    account.sequence = sequence;
+                }
+                const signerData = {
+                    accountNumber: account.accountNumber,
+                    sequence: account.sequence,
+                    chainId: chainId,
+                };
+                sign(chainId, accounts[0].address, ops, fee, '', signerData).then(
+                    (bodyBytes) => {
+                        broadcastTx(bodyBytes, chain).then((res) => {
+                            $.toast().reset("all");
+                            $.toast({
+                                heading: "Success",
+                                text: "Transaction Successful! ",
+                                showHideTransition: "slide",
+                                position: "top-center",
+                                icon: "success",
+                            });
+                            if (res.data.tx_response.code === 0) {
+                                let status = `<p>Transaction ID: </p><a href='https://ping.pub/${chain.name}/tx/${res.data.tx_response.txhash}' target="_blank">${res.data.tx_response.txhash}</a>`;
+                                $('#status').html(status);
+                            } else {
+                                let status = `<p style="color:red">Failed to send tx: ${res.data.tx_response.log || res.data.tx_response.raw_log}</p>`;
+                                $('#status').html(status);
+                            }
+                        });
+                    }
+                );
+            });
     })();
 
 });
