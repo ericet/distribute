@@ -62,7 +62,11 @@ async function reloadPage () {
                         coinMinimalDenom: chain.denom,
                         coinDecimals: chain.exponent,
                     },
-
+                    gasPriceStep: {
+                        low: 0.00,
+                        average: 0.01,
+                        high: 0.02,
+                      },
                     bip44: {
 
                         coinType: chain.coin_type,
