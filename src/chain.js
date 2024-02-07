@@ -56,32 +56,17 @@ export const chainMap = {
         prefix: "stars"
 
     },
-    "chihuahua-1": {
-        name: 'Chihuahua',
-        chain_status: 'experiemental',
-        rpc: 'https://rpc.cosmos.directory/chihuahua',
-        rest: 'https://rest.cosmos.directory/chihuahua',
-        symbol: 'HUAHUA',
-        denom: "uhuahua",
+    "celestia": {
+        name: 'Celestia',
+        rpc: 'https://rpc.cosmos.directory/celestia',
+        rest: 'https://rest.cosmos.directory/celestia',
+        symbol: 'TIA',
+        denom: "utia",
         exponent: 6,
         min_tx_fee: "2000",
         gas: 80000,
-        prefix: "chihuahua",
+        prefix: "celestia",
         coin_type: 118
-    },
-    "crescent-1": {
-        name: 'Crescent',
-        chain_status: 'experiemental',
-        rpc: 'https://rpc.cosmos.directory/crescent',
-        rest: 'https://rest.cosmos.directory/crescent',
-        symbol: 'CRE',
-        denom: "ucre",
-        exponent: 6,
-        min_tx_fee: "0",
-        gas: 80000,
-        prefix: "cre",
-        coin_type: 118
-
     },
     "evmos_9001-2": {
         chain_id: 'evmos_9001-2',
@@ -97,18 +82,18 @@ export const chainMap = {
         gas: 200000,
         prefix: "evmos"
     },
-    "atlantic-1":{
-        name:'Sei Atlantic Testnet',
-        chain_status:'experiemental',
-        rpc:'https://sei-testnet.nodejumper.io:443',
-        rest:"https://sei-testnet.nodejumper.io:1317",
-        symbol:'SEI',
-        denom: "usei",
-        exponent: 6,
-        min_tx_fee: "0",
-        prefix:"sei",
-        gas:80000,
-        coin_type:118
-
+    "dymension_1100-1": {
+        chain_id: 'dymension_1100-1',
+        name: 'Dymension',
+        value: "dymension",
+        rpc: 'https://rpc.cosmos.directory/dymension',
+        rest: 'https://rest.cosmos.directory/dymension',
+        hd_path: "m/44'/60'/0'/0/0",
+        symbol: 'DYM',
+        denom: "adym",
+        exponent: 18,
+        min_tx_fee: ["4000000000000000", "4000000000000000"],
+        gas: 200000,
+        prefix: "dym"
     }
 }

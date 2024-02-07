@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "dev": "webpack-dev-server",
-    "build": "webpack",
+    "dev": "set NODE_OPTIONS=--openssl-legacy-provider && webpack-dev-server",
+    "build": "set NODE_OPTIONS=--openssl-legacy-provider && webpack",
     "deploy": "npm run build && gh-pages -d dist"
   },
   "keywords": [],
