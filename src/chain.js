@@ -95,5 +95,19 @@ export const chainMap = {
         min_tx_fee: ["4000000000000000", "4000000000000000"],
         gas: 200000,
         prefix: "dym"
+    },
+    "ssc-1": {
+        chain_id: 'ssc-1',
+        name: 'Saga',
+        value: "saga",
+        rpc: 'https://ssc-rpc.sagarpc.io',
+        rest: 'https://ssc-lcd.sagarpc.io',
+        hd_path: "m/44'/60'/0'/0/0",
+        symbol: 'SAGA',
+        denom: "usaga",
+        exponent: 6,
+        min_tx_fee: "2000",
+        gas: 200000,
+        prefix: "saga"
     }
 }
